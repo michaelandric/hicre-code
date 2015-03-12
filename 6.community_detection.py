@@ -80,35 +80,38 @@ if __name__ == '__main__':
                          "Usage: %s <SUBJECT ID> <CONDITION ID> <THRESH DENSITY> \n" %
                          (os.path.basename(sys.argv[0]),))"""
 
-    os.chdir(os.environ['t2']+'/hicre/')
+    os.chdir(os.environ['t2']+'/hicre/noage_gend')
     print os.getcwd()
 
-    #subjid = 'CB' 
-    subjid = 'Null' 
+    subjid = 'SCB' 
+    #subjid = 'Null' 
     thresh_density = '0.1' 
-    #treedir = 'trees'
-    treedir = 'Null_trees'
-    #mod_dir = 'modularity'
-    mod_dir = 'Null_modularity'
+    treedir = 'trees'
+    #treedir = 'Null_trees'
+    mod_dir = 'modularity'
+    #mod_dir = 'Null_modularity'
     niter = 100
 
-    for i in xrange(niter):
-        for ll in ['A', 'B']:
-            #graph_dir = 'graphs'
-            graph_dir = 'Null_graphs'
-            graph = '%s/%s.%s_iter%s.dens_%s.edgelist' % (graph_dir, subjid, ll, i, thresh_density)
-            cm = COMMUN(graph)
-            cm.zipper('unzip')
-            cm.convert_graph()
-            cm.zipper('zip')
-            # Below for doing modularity
-            Qs = np.array(np.zeros(niter))
-            print 'Doing community detection. \nNumber of iterations: %s -- ' % niter+time.ctime()
-            if not os.path.exists(treedir):
-                os.makedirs(treedir)
-            if not os.path.exists(mod_dir):
-                os.makedirs(mod_dir)
-            for n in xrange(niter):
-                tree_outname = '%s/iter%s_subiter%s.%s.%s.dens_%s.tree' % (treedir, i, n, subjid, ll, thresh_density)
-                Qs[n] = cm.get_modularity(tree_outname)
-            np.savetxt('%s/%s_iter%s.%s.dens_%s.Qval' % (mod_dir, subjid, i, ll, thresh_density), Qs, fmt='%.4f')
+    """for i in xrange(niter):
+        for ll in ['A', 'B']:"""
+
+    graph_dir = 'graphs'
+    #graph_dir = 'Null_graphs'
+    #graph = '%s/%s.%s_iter%s.dens_%s.edgelist' % (graph_dir, subjid, ll, i, thresh_density)
+    graph = '%s/%s.AG.dens_%s.edgelist' % (graph_dir, subjid, thresh_density)
+    cm = COMMUN(graph)
+    cm.zipper('unzip')
+    cm.convert_graph()
+    cm.zipper('zip')
+    # Below for doing modularity
+    Qs = np.array(np.zeros(niter))
+    print 'Doing community detection. \nNumber of iterations: %s -- ' % niter+time.ctime()
+    if not os.path.exists(treedir):
+        os.makedirs(treedir)
+    if not os.path.exists(mod_dir):
+        os.makedirs(mod_dir)
+    for n in xrange(niter):
+        #tree_outname = '%s/iter%s_subiter%s.%s.%s.dens_%s.tree' % (treedir, i, n, subjid, ll, thresh_density)
+        tree_outname = '%s/iter%s.%s.AG.dens_%s.tree' % (treedir, n, subjid, thresh_density)
+        Qs[n] = cm.get_modularity(tree_outname)
+    np.savetxt('%s/%s.AG.dens_%s.Qval' % (mod_dir, subjid, thresh_density), Qs, fmt='%.4f')

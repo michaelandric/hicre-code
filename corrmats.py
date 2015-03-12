@@ -37,7 +37,6 @@ class GRAPHS:
         :return: Writes to text file the outname
         """
         print 'Now making graph -- '+time.ctime()
-        #ts = pd.read_csv(self.input, header=None)
         ts = self.input.T   # this need to transpose 
         n_vox = ts.shape[0]
         compl_graph = int((n_vox*(n_vox-1))/2)
@@ -70,21 +69,24 @@ if __name__ == "__main__":
                         (os.path.basename(sys.argv[0]),))
     """
 
-    os.chdir(os.environ['t2']+'/hicre/')
+    os.chdir(os.environ['t2']+'/hicre/noage_gend')
     print os.getcwd()
-    df = pd.read_csv('CTallregionsBOTH.csv')
+    #df = pd.read_csv('CTallregionsBOTH.csv')
+    df = pd.read_csv('CTage_gender_regr.csv')
 
-    subjid = 'SCB'
+    subjid = 'CB'
+    input_dat = df[df.loc[:,'Group']==subjid].iloc[:,1:]
     #subjid = 'Null'
     thresh_density = '0.1'
     n_iter = 100
-    a_avg_r = np.zeros(n_iter)
-    b_avg_r = np.zeros(n_iter)
+    #a_avg_r = np.zeros(n_iter)
+    #b_avg_r = np.zeros(n_iter)
+    avg_r = np.zeros(1)
 
-    for i in xrange(n_iter):
+    """for i in xrange(n_iter):
         print 'Iteration# %s' % i+' ----- '+time.ctime()
 
-        """This is for sample between groups
+        #This is for sample between groups
         ind_list_scb = df[df.loc[:,'Group']=='SCB'].index.tolist()
         ind_list_cb = df[df.loc[:,'Group']=='CB'].index.tolist()
         a_scb = random.sample(ind_list_scb, 9)
@@ -92,26 +94,29 @@ if __name__ == "__main__":
         a_cb = random.sample(ind_list_cb, 9)
         b_cb = list(set(ind_list_cb) - set(a_cb))
         input_dat_a = df.iloc[random.sample(a_scb+a_cb, len(a_scb+a_scb)), 3:]
-        input_dat_b = df.iloc[random.sample(b_scb+b_cb, len(b_scb+b_scb)), 3:]"""
+        input_dat_b = df.iloc[random.sample(b_scb+b_cb, len(b_scb+b_scb)), 3:]
 
-        """This is for sample within groups"""
+        #This is for sample within groups
         ind_list = df[df.loc[:,'Group']==subjid].index.tolist()
         a = random.sample(ind_list, 9)
         b = list(set(ind_list) - set(a))
         input_dat_a = df.iloc[random.sample(a, len(a)),3:]
-        input_dat_b = df.iloc[random.sample(b, len(b)),3:]
+        input_dat_b = df.iloc[random.sample(b, len(b)),3:]"""
 
-        outdir = 'graphs'
-        #outdir = 'Null_graphs'
-        if not os.path.exists(outdir):
-            os.makedirs(outdir)
+    outdir = 'graphs'
+    #outdir = 'Null_graphs'
+    if not os.path.exists(outdir):
+        os.makedirs(outdir)
 
-        graph_outname = '%s/%s.%s_iter%s.dens_%s.edgelist.gz' % (outdir, subjid, 'A', i, thresh_density)
-        GR = GRAPHS(subjid, input_dat_a, thresh_density)
-        a_avg_r[i] = GR.make_graph(graph_outname)
-        graph_outname = '%s/%s.%s_iter%s.dens_%s.edgelist.gz' % (outdir, subjid, 'B', i, thresh_density)
-        GR = GRAPHS(subjid, input_dat_b, thresh_density)
-        b_avg_r[i] = GR.make_graph(graph_outname)
+    """graph_outname = '%s/%s.%s_iter%s.dens_%s.edgelist.gz' % (outdir, subjid, 'A', i, thresh_density)
+    GR = GRAPHS(subjid, input_dat_a, thresh_density)
+    a_avg_r[i] = GR.make_graph(graph_outname)
+    graph_outname = '%s/%s.%s_iter%s.dens_%s.edgelist.gz' % (outdir, subjid, 'B', i, thresh_density)
+    GR = GRAPHS(subjid, input_dat_b, thresh_density)
+    b_avg_r[i] = GR.make_graph(graph_outname)"""
 
-    np.savetxt('Avg_r_val_%s_A.txt' % subjid, a_avg_r, fmt='%.4f')
-    np.savetxt('Avg_r_val_%s_B.txt' % subjid, b_avg_r, fmt='%.4f')
+    graph_outname = '%s/%s.AG.dens_%s.edgelist.gz' % (outdir, subjid, thresh_density)
+    GR = GRAPHS(subjid, input_dat, thresh_density)
+    avg_r[0] = GR.make_graph(graph_outname)
+
+    np.savetxt('Avg_r_val_%s.AG.txt' % subjid, avg_r, fmt='%.4f')
