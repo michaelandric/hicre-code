@@ -58,7 +58,7 @@ if __name__ == '__main__':
 
     os.chdir(os.environ['t2']+'/hicre/noage_gend')
     print os.getcwd()
-    subjid = 'CB'
+    subjid = 'SCB'
     # subjid = 'Null'
     thresh_density = '0.1'
     niter = 100   # because I have 100 iterations of the modularity solution, one tree for each
