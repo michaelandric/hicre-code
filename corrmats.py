@@ -105,8 +105,10 @@ if __name__ == "__main__":
         ind_list = df[df.loc[:,'Group']==subjid].index.tolist()
         a = random.sample(ind_list, 9)
         b = list(set(ind_list) - set(a))
-        input_dat_a = df.iloc[random.sample(a, len(a)),3:]
-        input_dat_b = df.iloc[random.sample(b, len(b)),3:]
+        # input_dat_a = df.iloc[random.sample(a, len(a)),3:]
+        input_dat_a = df.iloc[random.sample(a, len(a)), 1:]   # because no age gend has different input file
+        # input_dat_b = df.iloc[random.sample(b, len(b)),3:]
+        input_dat_b = df.iloc[random.sample(b, len(b)), 1:]
 
         graph_outname = '%s/%s.AG.%s_iter%s.dens_%s.edgelist.gz' % (outdir, subjid, 'A', i, thresh_density)
         GR = GRAPHS(subjid, input_dat_a, thresh_density)
