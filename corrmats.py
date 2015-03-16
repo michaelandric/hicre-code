@@ -75,8 +75,8 @@ if __name__ == "__main__":
     # df = pd.read_csv('CTage_gender_regr.csv')
 
     subjid = 'CB'
-    input_dat = df[df.loc[:,'Group']==subjid].iloc[:,1:]
-    #subjid = 'Null'
+    # input_dat = df[df.loc[:,'Group']==subjid].iloc[:,1:]
+    input_dat = df[df.loc[:,'Group']==subjid].iloc[:,3:]
     thresh_density = '0.1'
     n_iter = 100
     #a_avg_r = np.zeros(n_iter)
