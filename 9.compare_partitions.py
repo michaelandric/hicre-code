@@ -45,12 +45,11 @@ if __name__ == '__main__':
                          "Usage: %s <SUBJECT ID> <COMPARE METHOD> \n" %
                          (os.path.basename(sys.argv[0]),))"""
 
-
     os.chdir(os.environ['t2']+'/hicre/noage_gend')
     print os.getcwd()
-    
-    # subjid = 'SCB'
-    subjid1 = 'CB'
+
+    subjid = 'SCB'
+    # subjid1 = 'CB'
     # subjid2 = 'SCB'
     # subjid = 'Null'
     compare_method = 'ARI'
