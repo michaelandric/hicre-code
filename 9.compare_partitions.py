@@ -50,9 +50,9 @@ if __name__ == '__main__':
     print os.getcwd()
     
     # subjid = 'SCB'
-    # subjid1 = 'CB'
+    subjid1 = 'CB'
     # subjid2 = 'SCB'
-    subjid = 'Null'
+    # subjid = 'Null'
     compare_method = 'ARI'
     niter = 100   # because I have 100 iterations of the modularity solution, one tree for each
     n_combinations = ((niter**2)-niter)/2
