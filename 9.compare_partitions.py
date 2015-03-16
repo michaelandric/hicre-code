@@ -81,7 +81,7 @@ if __name__ == '__main__':
         # infile1 = '%s/iter%d_subiter%d.%s.A.dens_0.1.tree_highest' % (tree_dir, n, a_max, subjid)
         # infile1 = '%s/iter%d_subiter%d.%s.A.dens_0.1.tree_highest' % (tree_dir, n, a_max, subjid1)
         # infile1 = '%s/iter%d_subiter%d.%s.A.dens_0.1.tree_highest' % (tree_dir, n, a_max, subjid)
-        infile1 = '/home/michaeljames.andric/hicre/%s/%s_dens_0.1_tree.iter%d.highesttree' % (tree_dir, subjid, n)
+        infile1 = '/home/michaeljames.andric/hicre/%s/%s_dens0.1_tree.iter%d.highesttree' % (tree_dir, subjid, n)
         in_com_a = np.loadtxt(infile1)[:, 1]   # because these infile actually has one col for indices
         if len(in_com_a) == 147:
             in_com_a = np.append(in_com_a, in_com_a[len(in_com_a)-1])
