@@ -82,7 +82,7 @@ if __name__ == '__main__':
             for n in xrange(niter):
                 print 'ITERATION# %s  --  GRAPH %s ' % (n, gr)+ctime()
                 # print 'ITERATION# %s  ' % n+ctime()
-                main_tree = '%s/iter%s_subiter%s.%s.AG.%s.dens_%s.tree' % (treedir, gr, n, subjid, ll, thresh_density)
+                main_tree = '%s/iter%s_subiter%s.%s.%s.dens_%s.tree' % (treedir, gr, n, subjid, ll, thresh_density)
                 # main_tree = '%s/iter%s.%s.dens_%s.tree' % (treedir, n, subjid, thresh_density)
                 tree_out = '%s/iter%s_subiter%s.%s.AG.%s.dens_%s.tree_highest' % (tree_hier_dir, gr, n, subjid, ll, thresh_density)
                 # tree_out = '%s/iter%s.%s.dens_%s.tree_highest' % (tree_hier_dir, n, subjid, thresh_density)
