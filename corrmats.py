@@ -123,5 +123,5 @@ if __name__ == "__main__":
     GR = GRAPHS(subjid, input_dat, thresh_density)
     avg_r[0] = GR.make_graph(graph_outname)"""
 
-	np.savetxt('Avg_r_val_%s.AG.A.txt' % subjid, a_avg_r, fmt='%.4f')
-	np.savetxt('Avg_r_val_%s.AG.B.txt' % subjid, b_avg_r, fmt='%.4f')
+    np.savetxt('Avg_r_val_%s.AG.A.txt' % subjid, a_avg_r, fmt='%.4f')
+    np.savetxt('Avg_r_val_%s.AG.B.txt' % subjid, b_avg_r, fmt='%.4f')
