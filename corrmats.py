@@ -69,10 +69,10 @@ if __name__ == "__main__":
                         (os.path.basename(sys.argv[0]),))
     """
 
-    os.chdir(os.environ['t2']+'/hicre/noage_gend')
+    os.chdir(os.environ['t2']+'/hicre/regular')
     print os.getcwd()
-    #df = pd.read_csv('CTallregionsBOTH.csv')
-    df = pd.read_csv('CTage_gender_regr.csv')
+    df = pd.read_csv('CTallregionsBOTH.csv')
+    # df = pd.read_csv('CTage_gender_regr.csv')
 
     subjid = 'CB'
     input_dat = df[df.loc[:,'Group']==subjid].iloc[:,1:]
@@ -115,8 +115,12 @@ if __name__ == "__main__":
     GR = GRAPHS(subjid, input_dat_b, thresh_density)
     b_avg_r[i] = GR.make_graph(graph_outname)"""
 
-    graph_outname = '%s/%s.AG.dens_%s.edgelist.gz' % (outdir, subjid, thresh_density)
+    """graph_outname = '%s/%s.AG.dens_%s.edgelist.gz' % (outdir, subjid, thresh_density)
+    GR = GRAPHS(subjid, input_dat, thresh_density)
+    avg_r[0] = GR.make_graph(graph_outname)"""
+
+    graph_outname = '%s/%s.dens_%s.edgelist.gz' % (outdir, subjid, thresh_density)
     GR = GRAPHS(subjid, input_dat, thresh_density)
     avg_r[0] = GR.make_graph(graph_outname)
 
-    np.savetxt('Avg_r_val_%s.AG.txt' % subjid, avg_r, fmt='%.4f')
+    np.savetxt('Avg_r_val_%s.txt' % subjid, avg_r, fmt='%.4f')
