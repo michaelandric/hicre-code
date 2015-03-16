@@ -87,4 +87,4 @@ if __name__ == '__main__':
         #tree_out = '%s/iter%s_subiter%s.%s.%s.dens_%s.tree_highest' % (tree_hier_dir, gr, n, subjid, ll, thresh_density)
         tree_out = '%s/iter%s.%s.dens_%s.tree_highest' % (tree_hier_dir, n, subjid, thresh_density)
         module_count[n] = tp.get_hierarchical(main_tree, tree_out)
-    np.savetxt('%s/%s.AG.dens_%s.n_mods' % (n_mods_dir, subjid, thresh_density), module_count, fmt='%i')
+    np.savetxt('%s/%s.dens_%s.n_mods' % (n_mods_dir, subjid, thresh_density), module_count, fmt='%i')

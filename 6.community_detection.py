@@ -98,7 +98,7 @@ if __name__ == '__main__':
     graph_dir = 'graphs'
     #graph_dir = 'Null_graphs'
     #graph = '%s/%s.%s_iter%s.dens_%s.edgelist' % (graph_dir, subjid, ll, i, thresh_density)
-    graph = '%s/%s.AG.dens_%s.edgelist' % (graph_dir, subjid, thresh_density)
+    graph = '%s/%s.dens_%s.edgelist' % (graph_dir, subjid, thresh_density)
     cm = COMMUN(graph)
     cm.zipper('unzip')
     cm.convert_graph()
