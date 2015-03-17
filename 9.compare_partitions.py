@@ -45,7 +45,7 @@ if __name__ == '__main__':
                          "Usage: %s <SUBJECT ID> <COMPARE METHOD> \n" %
                          (os.path.basename(sys.argv[0]),))"""
 
-    os.chdir(os.environ['t2']+'/hicre/noage_gend')
+    os.chdir(os.environ['t2']+'/hicre/noage_gend/')
     print os.getcwd()
 
     subjid = 'SCB'
@@ -59,11 +59,11 @@ if __name__ == '__main__':
     # output_pref = 'within%s_%s.txt' % (subjid, compare_method)   # output naming prefix
     # output_pref = 'between%s_%s.txt' % ('CB_SCB', compare_method)   # output naming prefix
     # output_pref = '%s_%s.txt' % (subjid, compare_method)   # output naming prefix
-    output_pref = 'AGtoReal_%s_%s.txt' % (subjid, compare_method)   # output naming prefix
+    output_pref = 'AG_within%s_%s.txt' % (subjid, compare_method)   # output naming prefix
 
     # tree_dir = 'tree_highest'
     # tree_dir = 'Null_tree_highest'
-    tree_dir = 'tree_highest'
+    tree_dir = 'AB_tree_highest'
     n_regions = 148
     # Building array of inputs. These are the trees of highest modularity
     tree_mat1 = np.array(np.zeros(niter*n_regions)).reshape(n_regions, niter)
@@ -73,22 +73,26 @@ if __name__ == '__main__':
         # a_Qs = np.loadtxt('modularity/%s_iter%d.A.dens_0.1.Qval' % (subjid, n))
         # a_Qs = np.loadtxt('modularity/%s_iter%d.A.dens_0.1.Qval' % (subjid1, n))
         # a_Qs = np.loadtxt('Null_modularity/%s_iter%d.A.dens_0.1.Qval' % (subjid, n))
-        # a_max = a_Qs.argmax()
+        a_Qs = np.loadtxt('AB_modularity/%s.AG_iter%d.A.dens_0.1.Qval' % (subjid, n))
+        a_max = a_Qs.argmax()
         # b_Qs = np.loadtxt('modularity/%s_iter%d.B.dens_0.1.Qval' % (subjid, n))
         # b_Qs = np.loadtxt('modularity/%s_iter%d.B.dens_0.1.Qval' % (subjid2, n))
         # b_Qs = np.loadtxt('Null_modularity/%s_iter%d.B.dens_0.1.Qval' % (subjid, n))
-        # b_max = b_Qs.argmax() 
+        b_Qs = np.loadtxt('AB_modularity/%s.AG_iter%d.B.dens_0.1.Qval' % (subjid, n))
+        b_max = b_Qs.argmax() 
         # infile1 = '%s/iter%d_subiter%d.%s.A.dens_0.1.tree_highest' % (tree_dir, n, a_max, subjid)
         # infile1 = '%s/iter%d_subiter%d.%s.A.dens_0.1.tree_highest' % (tree_dir, n, a_max, subjid1)
         # infile1 = '%s/iter%d_subiter%d.%s.A.dens_0.1.tree_highest' % (tree_dir, n, a_max, subjid)
-        infile1 = '/home/michaeljames.andric/hicre/%s/%s_dens0.1_tree.iter%d.highesttree' % (tree_dir, subjid, n)
+        # infile1 = '/home/michaeljames.andric/hicre/%s/%s_dens0.1_tree.iter%d.highesttree' % (tree_dir, subjid, n)
+        infile1 = '%s/iter%d_subiter%d.%s.AG.A.dens_0.1.tree_highest' % (tree_dir, n, a_max, subjid)
         in_com_a = np.loadtxt(infile1)[:, 1]   # because these infile actually has one col for indices
         if len(in_com_a) == 147:
             in_com_a = np.append(in_com_a, in_com_a[len(in_com_a)-1])
         tree_mat1[:, n] = in_com_a
         # infile2 = '%s/iter%d_subiter%d.%s.B.dens_0.1.tree_highest' % (tree_dir, n, b_max, subjid)
         # infile2 = '%s/iter%d_subiter%d.%s.B.dens_0.1.tree_highest' % (tree_dir, n, b_max, subjid2)
-        infile2 = '%s/iter%d.%s.dens_0.1.tree_highest' % (tree_dir, n, subjid)
+        #infile2 = '%s/iter%d.%s.dens_0.1.tree_highest' % (tree_dir, n, subjid)
+        infile2 = '%s/iter%d_subiter%d.%s.AG.B.dens_0.1.tree_highest' % (tree_dir, n, b_max, subjid)
         in_com_b = np.loadtxt(infile2)[:, 1]   # because these infile actually has one col for indices
         if len(in_com_b) == 147:
             in_com_b = np.append(in_com_b, in_com_b[len(in_com_b)-1])
