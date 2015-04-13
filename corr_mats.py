@@ -104,10 +104,10 @@ if __name__ == "__main__":
             input_dat_a = df.iloc[random.sample(a, len(a)), 3:]
             input_dat_b = df.iloc[random.sample(b, len(b)), 3:]
 
-            graph_outname = '%s/%s.AG.%s_iter%s.dens_%s.edgelist.gz' % (outdir, subjid, 'A', i, thresh_density)
+            graph_outname = '%s/%s.%s_iter%s.dens_%s.edgelist.gz' % (outdir, subjid, 'A', i, thresh_density)
             GR = GRAPHS(subjid, input_dat_a, thresh_density)
             a_avg_r[i] = GR.make_graph(graph_outname)
-            graph_outname = '%s/%s.AG.%s_iter%s.dens_%s.edgelist.gz' % (outdir, subjid, 'B', i, thresh_density)
+            graph_outname = '%s/%s.%s_iter%s.dens_%s.edgelist.gz' % (outdir, subjid, 'B', i, thresh_density)
             GR = GRAPHS(subjid, input_dat_b, thresh_density)
             b_avg_r[i] = GR.make_graph(graph_outname)
 
