@@ -71,16 +71,16 @@ if __name__ == '__main__':
     tree_mat2 = np.array(np.zeros(niter*n_regions)).reshape(n_regions, niter)
     for n in xrange(niter):
         print n
-        a_Qs = np.loadtxt('modularity_dens%s/%s_iter%d.A.dens_0.1.Qval' % (thresh_density, subjid1, n))
+        a_Qs = np.loadtxt('modularity_dens%s/%s_iter%d.A.dens_%s.Qval' % (thresh_density, subjid1, n, thresh_density))
         a_max = a_Qs.argmax()
-        b_Qs = np.loadtxt('modularity_dens%s/%s_iter%d.B.dens_0.1.Qval' % (thresh_density, subjid2, n))
+        b_Qs = np.loadtxt('modularity_dens%s/%s_iter%d.B.dens_%s.Qval' % (thresh_density, subjid2, n, thresh_density))
         b_max = b_Qs.argmax() 
-        infile1 = '%s/iter%d_subiter%d.%s.A.dens_0.1.tree_highest' % (tree_dir, n, a_max, subjid1)
+        infile1 = '%s/iter%d_subiter%d.%s.A.dens_%s.tree_highest' % (tree_dir, n, a_max, subjid1, thresh_density)
         in_com_a = np.loadtxt(infile1)[:, 1]   # because these infile actually has one col for indices
         if len(in_com_a) == 147:
             in_com_a = np.append(in_com_a, in_com_a[len(in_com_a)-1])
         tree_mat1[:, n] = in_com_a
-        infile2 = '%s/iter%d_subiter%d.%s.B.dens_0.1.tree_highest' % (tree_dir, n, b_max, subjid2)
+        infile2 = '%s/iter%d_subiter%d.%s.B.dens_%s.tree_highest' % (tree_dir, n, b_max, subjid2, thresh_density)
         in_com_b = np.loadtxt(infile2)[:, 1]   # because these infile actually has one col for indices
         if len(in_com_b) == 147:
             in_com_b = np.append(in_com_b, in_com_b[len(in_com_b)-1])
