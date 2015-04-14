@@ -50,14 +50,13 @@ if __name__ == '__main__':
 
     for thresh_density in ['0.2', '0.3', '0.4', '0.5', '0.6']:
         # thresh_density = '0.2'
-        subjid1 = 'CB'
-        subjid2 = subjid1
-        # subjid2 = 'SCB'
+        # subjid1 = 'CB'
+        # subjid2 = subjid1
+        subjid2 = 'SCB'
+        subjid1 = subjid2
         niter = 100
         n_combinations = ((niter**2)-niter)/2
         compare_out = np.array(np.zeros(n_combinations))   # prep output array
-        # output_pref = 'within%s_%s.txt' % \
-        #    (subjid, compare_method)   # output naming prefix
 
         tree_dir = 'AB_tree_highest_dens%s' % thresh_density
         n_regions = 148
@@ -100,7 +99,8 @@ if __name__ == '__main__':
         cmp = COMPARE()
         from sklearn.metrics import adjusted_rand_score
         # output_pref = 'between%s_dens%s_ARI.txt' % ('CB_SCB', thresh_density)
-        output_pref = 'within%s_dens%s_ARI.txt' % (subjid1, thresh_density)
+        # output_pref = 'within%s_dens%s_ARI.txt' % (subjid1, thresh_density)
+        output_pref = 'within%s_dens%s_ARI.txt' % (subjid2, thresh_density)
         for i, combo in enumerate(combinations(np.arange(100), 2)):
             tree_a = tree_mat1[:, combo[0]]
             tree_b = tree_mat2[:, combo[1]]
@@ -109,7 +109,8 @@ if __name__ == '__main__':
 
         from sklearn.metrics import normalized_mutual_info_score
         # output_pref = 'between%s_dens%s_NMI.txt' % ('CB_SCB', thresh_density)
-        output_pref = 'within%s_dens%s_NMI.txt' % (subjid1, thresh_density)
+        # output_pref = 'within%s_dens%s_NMI.txt' % (subjid1, thresh_density)
+        output_pref = 'within%s_dens%s_NMI.txt' % (subjid2, thresh_density)
         for i, combo in enumerate(combinations(np.arange(100), 2)):
             tree_a = tree_mat1[:, combo[0]]
             tree_b = tree_mat2[:, combo[1]]
