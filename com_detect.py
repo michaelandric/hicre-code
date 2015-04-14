@@ -128,5 +128,5 @@ if __name__ == '__main__':
                         tree_outname = os.path.join(treedir, tree_outpref)
                         Qs[n] = cm.get_modularity(tree_outname)
                         qval_name = '%s_iter%s.%s.dens_%s.Qval' % \
-                                    (mod_dir, subjid, i, ll, thresh_density)
+                                    (subjid, i, ll, thresh_density)
                         np.savetxt(os.path.join(mod_dir, qval_name), Qs, fmt='%.4f')
