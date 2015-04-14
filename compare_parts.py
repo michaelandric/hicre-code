@@ -47,55 +47,71 @@ if __name__ == '__main__':
 
     os.chdir(os.environ['t2']+'/hicre/')
     print os.getcwd()
-    thresh_density = '0.2'
-    # subjid = 'SCB'
-    subjid1 = 'CB'
-    subjid2 = 'SCB'
-    # subjid = 'Null'
-    niter = 100   # because I have 100 iterations of the modularity solution
-    n_combinations = ((niter**2)-niter)/2
-    compare_out = np.array(np.zeros(n_combinations))   # prep output array
-    # output_pref = 'within%s_%s.txt' % (subjid, compare_method)   # output naming prefix
 
-    # tree_dir = 'tree_highest'
-    # tree_dir = 'Null_tree_highest'
-    tree_dir = 'AB_tree_highest_dens%s' % thresh_density
-    n_regions = 148
-    # Building array of inputs. These are the trees of highest modularity
-    tree_mat1 = np.array(np.zeros(niter*n_regions)).reshape(n_regions, niter)
-    tree_mat2 = np.array(np.zeros(niter*n_regions)).reshape(n_regions, niter)
-    for n in xrange(niter):
-        print n
-        a_Qs = np.loadtxt('modularity_dens%s/%s_iter%d.A.dens_%s.Qval' % (thresh_density, subjid1, n, thresh_density))
-        a_max = a_Qs.argmax()
-        b_Qs = np.loadtxt('modularity_dens%s/%s_iter%d.B.dens_%s.Qval' % (thresh_density, subjid2, n, thresh_density))
-        b_max = b_Qs.argmax()
-        infile1 = '%s/iter%d_subiter%d.%s.A.dens_%s.tree_highest' % (tree_dir, n, a_max, subjid1, thresh_density)
-        in_com_a = np.loadtxt(infile1)[:, 1]   # because these infile actually has one col for indices
-        if len(in_com_a) == 147:
-            in_com_a = np.append(in_com_a, in_com_a[len(in_com_a)-1])
-        tree_mat1[:, n] = in_com_a
-        infile2 = '%s/iter%d_subiter%d.%s.B.dens_%s.tree_highest' % (tree_dir, n, b_max, subjid2, thresh_density)
-        in_com_b = np.loadtxt(infile2)[:, 1]   # because these infile actually has one col for indices
-        if len(in_com_b) == 147:
-            in_com_b = np.append(in_com_b, in_com_b[len(in_com_b)-1])
-        tree_mat2[:, n] = in_com_b
-    # tree_mat2 = tree_mat1   # If comparing for same subject over iterations
+    for thresh_density in ['0.3', '0.4', '0.5', '0.6']:
+        # thresh_density = '0.2'
+        # subjid = 'SCB'
+        subjid1 = 'CB'
+        subjid2 = 'SCB'
+        # subjid = 'Null'
+        niter = 100
+        n_combinations = ((niter**2)-niter)/2
+        compare_out = np.array(np.zeros(n_combinations))   # prep output array
+        # output_pref = 'within%s_%s.txt' % \
+        #    (subjid, compare_method)   # output naming prefix
 
-    # Main section to run. DOING BOTH ARI AND NMI
-    cmp = COMPARE()
-    from sklearn.metrics import adjusted_rand_score
-    output_pref = 'between%s_dens%s_ARI.txt' % ('CB_SCB', thresh_density)
-    i = 0
-    for combo in combinations(np.arange(100), 2):
-        compare_out[i] = cmp.adjRand(tree_mat1[:, combo[0]], tree_mat2[:, combo[1]])
-        i = i+1
-    np.savetxt(output_pref, compare_out, fmt='%.4f')
+        tree_dir = 'AB_tree_highest_dens%s' % thresh_density
+        n_regions = 148
+        # Building array of inputs. These are the trees of highest modularity
+        tree_mat1 = np.array(np.zeros(niter*n_regions))
+        tree_mat1 = tree_mat1.reshape(n_regions, niter)
+        tree_mat2 = np.array(np.zeros(niter*n_regions))
+        tree_mat2 = tree_mat2.reshape(n_regions, niter)
 
-    from sklearn.metrics import normalized_mutual_info_score
-    output_pref = 'between%s_dens%s_NMI.txt' % ('CB_SCB', thresh_density)
-    i = 0
-    for combo in combinations(np.arange(100), 2):
-        compare_out[i] = cmp.normalized_MI(tree_mat1[:, combo[0]], tree_mat2[:, combo[1]])
-        i = i+1
-    np.savetxt(output_pref, compare_out, fmt='%.4f')
+        modularity_dir = 'modularity_dens%s' % thresh_density
+        for n in xrange(niter):
+            print n
+
+            a_Q_pref = '%s_iter%d.A.dens_%s.Qval' % \
+                (thresh_density, subjid1, n, thresh_density)
+            a_Qs = np.loadtxt(os.path.join(modularity_dir, a_Q_pref))
+            a_max = a_Qs.argmax()
+            b_Q_pref = '%s_iter%d.B.dens_%s.Qval' % \
+                (thresh_density, subjid2, n, thresh_density)
+            b_Qs = np.loadtxt(os.path.join(modularity_dir, b_Q_pref))
+            b_max = b_Qs.argmax()
+
+            infile1_name = 'iter%d_subiter%d.%s.A.dens_%s.tree_highest' % \
+                (n, a_max, subjid1, thresh_density)
+            # because these infile actually has one col for indices:
+            in_com_a = np.loadtxt(os.path.join(tree_dir, infile1_name))[:, 1]
+            if len(in_com_a) == 147:
+                in_com_a = np.append(in_com_a, in_com_a[len(in_com_a)-1])
+            tree_mat1[:, n] = in_com_a
+
+            infile2_name = 'iter%d_subiter%d.%s.B.dens_%s.tree_highest' % \
+                (n, b_max, subjid2, thresh_density)
+            # because these infile actually has one col for indices:
+            in_com_b = np.loadtxt(os.path.join(tree_dir, infile2_name))[:, 1]
+            if len(in_com_b) == 147:
+                in_com_b = np.append(in_com_b, in_com_b[len(in_com_b)-1])
+            tree_mat2[:, n] = in_com_b
+        # tree_mat2 = tree_mat1   # If comparing same subject over iterations
+
+        # Main section to run. DOING BOTH ARI AND NMI
+        cmp = COMPARE()
+        from sklearn.metrics import adjusted_rand_score
+        output_pref = 'between%s_dens%s_ARI.txt' % ('CB_SCB', thresh_density)
+        i = 0
+        for combo in combinations(np.arange(100), 2):
+            compare_out[i] = cmp.adjRand(tree_mat1[:, combo[0]], tree_mat2[:, combo[1]])
+            i = i+1
+        np.savetxt(output_pref, compare_out, fmt='%.4f')
+
+        from sklearn.metrics import normalized_mutual_info_score
+        output_pref = 'between%s_dens%s_NMI.txt' % ('CB_SCB', thresh_density)
+        i = 0
+        for combo in combinations(np.arange(100), 2):
+            compare_out[i] = cmp.normalized_MI(tree_mat1[:, combo[0]], tree_mat2[:, combo[1]])
+            i = i+1
+        np.savetxt(output_pref, compare_out, fmt='%.4f')
