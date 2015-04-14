@@ -92,5 +92,5 @@ if __name__ == '__main__':
                         tree_out = os.path.join(tree_hier_dir, tree_out_name)
                         module_count[n] = tp.get_hierarchical(main_tree, tree_out)
                     outname = '%s_iter%s.%s.dens_%s.n_mods' % \
-                        (n_mods_dir, subjid, gr, ll, thresh_density)
+                        (subjid, gr, ll, thresh_density)
                     np.savetxt(os.path.join(n_mods_dir, outname), module_count, fmt='%i')
