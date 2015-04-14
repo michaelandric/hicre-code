@@ -48,12 +48,11 @@ if __name__ == '__main__':
     os.chdir(os.environ['t2']+'/hicre/')
     print os.getcwd()
 
-    for thresh_density in ['0.3', '0.4', '0.5', '0.6']:
+    for thresh_density in ['0.2', '0.3', '0.4', '0.5', '0.6']:
         # thresh_density = '0.2'
-        # subjid = 'SCB'
         subjid1 = 'CB'
-        subjid2 = 'SCB'
-        # subjid = 'Null'
+        subjid2 = subjid1
+        # subjid2 = 'SCB'
         niter = 100
         n_combinations = ((niter**2)-niter)/2
         compare_out = np.array(np.zeros(n_combinations))   # prep output array
@@ -96,12 +95,12 @@ if __name__ == '__main__':
             if len(in_com_b) == 147:
                 in_com_b = np.append(in_com_b, in_com_b[len(in_com_b)-1])
             tree_mat2[:, n] = in_com_b
-        # tree_mat2 = tree_mat1   # If comparing same subject over iterations
 
         # Main section to run. DOING BOTH ARI AND NMI
         cmp = COMPARE()
         from sklearn.metrics import adjusted_rand_score
-        output_pref = 'between%s_dens%s_ARI.txt' % ('CB_SCB', thresh_density)
+        # output_pref = 'between%s_dens%s_ARI.txt' % ('CB_SCB', thresh_density)
+        output_pref = 'within%s_dens%s_ARI.txt' % (subjid1, thresh_density)
         for i, combo in enumerate(combinations(np.arange(100), 2)):
             tree_a = tree_mat1[:, combo[0]]
             tree_b = tree_mat2[:, combo[1]]
@@ -109,7 +108,8 @@ if __name__ == '__main__':
         np.savetxt(output_pref, compare_out, fmt='%.4f')
 
         from sklearn.metrics import normalized_mutual_info_score
-        output_pref = 'between%s_dens%s_NMI.txt' % ('CB_SCB', thresh_density)
+        # output_pref = 'between%s_dens%s_NMI.txt' % ('CB_SCB', thresh_density)
+        output_pref = 'within%s_dens%s_NMI.txt' % (subjid1, thresh_density)
         for i, combo in enumerate(combinations(np.arange(100), 2)):
             tree_a = tree_mat1[:, combo[0]]
             tree_b = tree_mat2[:, combo[1]]
