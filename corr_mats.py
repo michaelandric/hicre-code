@@ -76,40 +76,42 @@ if __name__ == "__main__":
     for subjid in ['CB', 'SCB']:
 
         input_dat = df[df.loc[:, 'Group'] == subjid].iloc[:, 3:]
-        thresh_density = '0.2'
-        n_iter = 100
-        a_avg_r = np.zeros(n_iter)
-        b_avg_r = np.zeros(n_iter)
 
-        outdir = 'graphs'
-        if not os.path.exists(outdir):
-            os.makedirs(outdir)
+        for thresh_density in ['0.3', '0.4', '0.5', '0.6']:
+            # thresh_density = '0.2'
+            n_iter = 100
+            a_avg_r = np.zeros(n_iter)
+            b_avg_r = np.zeros(n_iter)
 
-        for i in xrange(n_iter):
-            print 'Iteration# %s' % i+' ----- '+time.ctime()
-            """# This is for sample between groups
-            ind_list_scb = df[df.loc[:,'Group']=='SCB'].index.tolist()
-            ind_list_cb = df[df.loc[:,'Group']=='CB'].index.tolist()
-            a_scb = random.sample(ind_list_scb, 9)
-            b_scb = list(set(ind_list_scb) - set(a_scb))
-            a_cb = random.sample(ind_list_cb, 9)
-            b_cb = list(set(ind_list_cb) - set(a_cb))
-            input_dat_a = df.iloc[random.sample(a_scb+a_cb, len(a_scb+a_scb)), 3:]
-            input_dat_b = df.iloc[random.sample(b_scb+b_cb, len(b_scb+b_scb)), 3:]"""
+            outdir = 'graphs'
+            if not os.path.exists(outdir):
+                os.makedirs(outdir)
 
-            # This is for sample within groups
-            ind_list = df[df.loc[:, 'Group'] == subjid].index.tolist()
-            a = random.sample(ind_list, 9)
-            b = list(set(ind_list) - set(a))
-            input_dat_a = df.iloc[random.sample(a, len(a)), 3:]
-            input_dat_b = df.iloc[random.sample(b, len(b)), 3:]
+            for i in xrange(n_iter):
+                print 'Iteration# %s' % i+' ----- '+time.ctime()
+                """# This is for sample between groups
+                ind_list_scb = df[df.loc[:,'Group']=='SCB'].index.tolist()
+                ind_list_cb = df[df.loc[:,'Group']=='CB'].index.tolist()
+                a_scb = random.sample(ind_list_scb, 9)
+                b_scb = list(set(ind_list_scb) - set(a_scb))
+                a_cb = random.sample(ind_list_cb, 9)
+                b_cb = list(set(ind_list_cb) - set(a_cb))
+                input_dat_a = df.iloc[random.sample(a_scb+a_cb, len(a_scb+a_scb)), 3:]
+                input_dat_b = df.iloc[random.sample(b_scb+b_cb, len(b_scb+b_scb)), 3:]"""
 
-            graph_outname = '%s/%s.%s_iter%s.dens_%s.edgelist.gz' % (outdir, subjid, 'A', i, thresh_density)
-            GR = GRAPHS(subjid, input_dat_a, thresh_density)
-            a_avg_r[i] = GR.make_graph(graph_outname)
-            graph_outname = '%s/%s.%s_iter%s.dens_%s.edgelist.gz' % (outdir, subjid, 'B', i, thresh_density)
-            GR = GRAPHS(subjid, input_dat_b, thresh_density)
-            b_avg_r[i] = GR.make_graph(graph_outname)
+                # This is for sample within groups
+                ind_list = df[df.loc[:, 'Group'] == subjid].index.tolist()
+                a = random.sample(ind_list, 9)
+                b = list(set(ind_list) - set(a))
+                input_dat_a = df.iloc[random.sample(a, len(a)), 3:]
+                input_dat_b = df.iloc[random.sample(b, len(b)), 3:]
 
-        np.savetxt('Avg_r_val_%s.A.dens_%s.txt' % (subjid, thresh_density), a_avg_r, fmt='%.4f')
-        np.savetxt('Avg_r_val_%s.B.dens_%s.txt' % (subjid, thresh_density), b_avg_r, fmt='%.4f')
+                graph_outname = '%s/%s.%s_iter%s.dens_%s.edgelist.gz' % (outdir, subjid, 'A', i, thresh_density)
+                GR = GRAPHS(subjid, input_dat_a, thresh_density)
+                a_avg_r[i] = GR.make_graph(graph_outname)
+                graph_outname = '%s/%s.%s_iter%s.dens_%s.edgelist.gz' % (outdir, subjid, 'B', i, thresh_density)
+                GR = GRAPHS(subjid, input_dat_b, thresh_density)
+                b_avg_r[i] = GR.make_graph(graph_outname)
+
+            np.savetxt('Avg_r_val_%s.A.dens_%s.txt' % (subjid, thresh_density), a_avg_r, fmt='%.4f')
+            np.savetxt('Avg_r_val_%s.B.dens_%s.txt' % (subjid, thresh_density), b_avg_r, fmt='%.4f')
