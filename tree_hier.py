@@ -30,7 +30,8 @@ class TreeParser(object):
         Find the number of modules at that level.
         :param tree_all_levels: the entire tree comprising
         every level (from community detection)
-        :param tr_outname: the output name for the tree at highest hierarchical level
+        :param tr_outname: the output name for the tree at \
+        highest hierarchical level
         :return: number of modules at highest hierarchical level
         """
         cmdargs = split('hierarchy -n %s' % tree_all_levels)
@@ -61,30 +62,35 @@ if __name__ == '__main__':
     print os.getcwd()
 
     for subjid in ['CB', 'SCB']:
-        thresh_density = '0.2'
-        niter = 100
 
-        tp = TreeParser()
+        for thresh_density in ['0.3', '0.4', '0.5', '0.6']:
+            # thresh_density = '0.2'
+            niter = 100
 
-        treedir = 'trees_dens%s' % thresh_density
-        tree_hier_dir = 'AB_tree_highest_dens%s' % thresh_density
-        # tree_hier_dir = 'Null_tree_highest'
-        n_mods_dir = 'AB_N_mods_nonSingle_dens%s' % thresh_density
-        # n_mods_dir = 'Null_N_mods_nonSingle'
-        if not os.path.exists(tree_hier_dir):
-            os.makedirs(tree_hier_dir)
-        if not os.path.exists(n_mods_dir):
-            os.makedirs(n_mods_dir)
+            tp = TreeParser()
 
-        for ll in ['A', 'B']:
-            for gr in xrange(100):
-                module_count = np.array(np.zeros(niter))
-                for n in xrange(niter):
-                    print 'ITERATION# %s  --  GRAPH %s ' % (n, gr)+ctime()
-                    # print 'ITERATION# %s  ' % n+ctime()
-                    main_tree = '%s/iter%s_subiter%s.%s.%s.dens_%s.tree' % (treedir, gr, n, subjid, ll, thresh_density)
-                    # main_tree = '%s/iter%s.%s.dens_%s.tree' % (treedir, n, subjid, thresh_density)
-                    tree_out = '%s/iter%s_subiter%s.%s.%s.dens_%s.tree_highest' % (tree_hier_dir, gr, n, subjid, ll, thresh_density)
-                    # tree_out = '%s/iter%s.%s.dens_%s.tree_highest' % (tree_hier_dir, n, subjid, thresh_density)
-                    module_count[n] = tp.get_hierarchical(main_tree, tree_out)
-                np.savetxt('%s/%s_iter%s.%s.dens_%s.n_mods' % (n_mods_dir, subjid, gr, ll, thresh_density), module_count, fmt='%i')
+            treedir = 'trees_dens%s' % thresh_density
+            tree_hier_dir = 'AB_tree_highest_dens%s' % thresh_density
+            # tree_hier_dir = 'Null_tree_highest'
+            n_mods_dir = 'AB_N_mods_nonSingle_dens%s' % thresh_density
+            # n_mods_dir = 'Null_N_mods_nonSingle'
+            if not os.path.exists(tree_hier_dir):
+                os.makedirs(tree_hier_dir)
+            if not os.path.exists(n_mods_dir):
+                os.makedirs(n_mods_dir)
+
+            for ll in ['A', 'B']:
+                for gr in xrange(100):
+                    module_count = np.array(np.zeros(niter))
+                    for n in xrange(niter):
+                        print 'ITERATION# %s  --  GRAPH %s ' % (n, gr)+ctime()
+                        main_tree_name = 'iter%s_subiter%s.%s.%s.dens_%s.tree' % \
+                            (gr, n, subjid, ll, thresh_density)
+                        main_tree = os.path.join(treedir, main_tree_name)
+                        tree_out_name = 'iter%s_subiter%s.%s.%s.dens_%s.tree_highest' % \
+                            (gr, n, subjid, ll, thresh_density)
+                        tree_out = os.path.join(tree_hier_dir, tree_out_name)
+                        module_count[n] = tp.get_hierarchical(main_tree, tree_out)
+                    outname = '%s_iter%s.%s.dens_%s.n_mods' % \
+                        (n_mods_dir, subjid, gr, ll, thresh_density)
+                    np.savetxt(os.path.join(n_mods_dir, outname), module_count, fmt='%i')
