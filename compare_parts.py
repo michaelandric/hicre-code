@@ -73,11 +73,11 @@ if __name__ == '__main__':
             print n
 
             a_Q_pref = '%s_iter%d.A.dens_%s.Qval' % \
-                (thresh_density, subjid1, n, thresh_density)
+                (subjid1, n, thresh_density)
             a_Qs = np.loadtxt(os.path.join(modularity_dir, a_Q_pref))
             a_max = a_Qs.argmax()
             b_Q_pref = '%s_iter%d.B.dens_%s.Qval' % \
-                (thresh_density, subjid2, n, thresh_density)
+                (subjid2, n, thresh_density)
             b_Qs = np.loadtxt(os.path.join(modularity_dir, b_Q_pref))
             b_max = b_Qs.argmax()
 
