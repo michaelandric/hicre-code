@@ -102,16 +102,16 @@ if __name__ == '__main__':
         cmp = COMPARE()
         from sklearn.metrics import adjusted_rand_score
         output_pref = 'between%s_dens%s_ARI.txt' % ('CB_SCB', thresh_density)
-        i = 0
-        for combo in combinations(np.arange(100), 2):
-            compare_out[i] = cmp.adjRand(tree_mat1[:, combo[0]], tree_mat2[:, combo[1]])
-            i = i+1
+        for i, combo in enumerate(combinations(np.arange(100), 2)):
+            tree_a = tree_mat1[:, combo[0]]
+            tree_b = tree_mat2[:, combo[1]]
+            compare_out[i] = cmp.adjRand(tree_a, tree_b)
         np.savetxt(output_pref, compare_out, fmt='%.4f')
 
         from sklearn.metrics import normalized_mutual_info_score
         output_pref = 'between%s_dens%s_NMI.txt' % ('CB_SCB', thresh_density)
-        i = 0
-        for combo in combinations(np.arange(100), 2):
-            compare_out[i] = cmp.normalized_MI(tree_mat1[:, combo[0]], tree_mat2[:, combo[1]])
-            i = i+1
+        for i, combo in enumerate(combinations(np.arange(100), 2)):
+            tree_a = tree_mat1[:, combo[0]]
+            tree_b = tree_mat2[:, combo[1]]
+            compare_out[i] = cmp.normalized_MI(tree_a, tree_b)
         np.savetxt(output_pref, compare_out, fmt='%.4f')
