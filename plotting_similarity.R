@@ -24,15 +24,15 @@ dev.off()
 pdf("plotting_similarity_NMI.pdf", paper="USr", width=8.5)
 for (p in seq(.2, .6, .1))
 {
-# Normalized Mutual Information
-cb_nmi <- read.table(paste('withinCB_dens',p,'_NMI.txt', sep=''))$V1
-scb_nmi <- read.table(paste('withinSCB_dens',p,'_NMI.txt', sep=''))$V1
-b_nmi <- read.table(paste('betweenCB_SCB_dens',p,'_NMI.txt', sep=''))$V1
-
-repnames <- c(rep("CB", length(cb_nmi)), rep("SCB", length(scb_nmi)), rep("BTWN", length(b_nmi)))
-nm_df <- tbl_df(data.frame(c(cb_nmi, scb_nmi, b_nmi), repnames))
-names(nm_df) <- c("NMI", "Group")
-print(summary(b_nmi))
-print(qplot(NMI, data = nm_df, geom="density", fill=Group, alpha=I(.66), xlim=c(0,1), main=paste("Density ",p*100,"%", sep=""), xlab="Normalized Mutual Information") + theme(panel.background = element_rect(fill="white")))
+    # Normalized Mutual Information
+    cb_nmi <- read.table(paste('withinCB_dens',p,'_NMI.txt', sep=''))$V1
+    scb_nmi <- read.table(paste('withinSCB_dens',p,'_NMI.txt', sep=''))$V1
+    b_nmi <- read.table(paste('betweenCB_SCB_dens',p,'_NMI.txt', sep=''))$V1
+    
+    repnames <- c(rep("CB", length(cb_nmi)), rep("SCB", length(scb_nmi)), rep("BTWN", length(b_nmi)))
+    nm_df <- tbl_df(data.frame(c(cb_nmi, scb_nmi, b_nmi), repnames))
+    names(nm_df) <- c("NMI", "Group")
+    print(summary(b_nmi))
+    print(qplot(NMI, data = nm_df, geom="density", fill=Group, alpha=I(.66), xlim=c(0,1), main=paste("Density ",p*100,"%", sep=""), xlab="Normalized Mutual Information") + theme(panel.background = element_rect(fill="white")))
 }
 dev.off()
