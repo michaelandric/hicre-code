@@ -59,6 +59,7 @@ if __name__ == '__main__':
     if not os.path.exists(n_mods_dir):
         os.makedirs(n_mods_dir)
 
+    # iterate through subjid and densities
     for subjid in ['CB', 'SCB']:
         for thresh_density in ['0.2', '0.3', '0.4', '0.5', '0.6']:
             module_count = np.array(np.zeros(niter))
