@@ -65,9 +65,11 @@ if __name__ == '__main__':
             module_count = np.array(np.zeros(niter))
             for n in xrange(niter):
                 print 'ITERATION# %s ' % n+ctime()
-                main_tree_name = 'iter%s.%s.dens_%s.tree' % (n, subjid, thresh_density)
+                main_tree_name = 'iter%s.%s.dens_%s.tree' % \
+                    (n, subjid, thresh_density)
                 main_tree = os.path.join(treedir, main_tree_name)
-                tree_out_name = 'iter%s.%s.dens_%s.tree_highest' % (n, subjid, thresh_density)
+                tree_out_name = 'iter%s.%s.dens_%s.tree_highest' % \
+                    (n, subjid, thresh_density)
                 tree_out = os.path.join(tree_hier_dir, tree_out_name)
                 module_count[n] = tp.get_hierarchical(main_tree, tree_out)
             n_mods_outname = '%s.dens_%s.n_mods' % (subjid, thresh_density)
