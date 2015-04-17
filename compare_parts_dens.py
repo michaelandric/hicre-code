@@ -47,7 +47,7 @@ if __name__ == '__main__':
     os.chdir(os.environ['t2']+'/hicre/regular')
     print os.getcwd()
 
-    tree_dir = 'trees'
+    tree_dir = 'tree_highest'
     modularity_dir = 'modularity'
     thresh_densities = ['0.1', '0.2', '0.3', '0.4', '0.5', '0.6']
     n_combinations = ((len(thresh_densities)**2)-len(thresh_densities))/2
