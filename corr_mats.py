@@ -90,14 +90,16 @@ if __name__ == "__main__":
             for i in xrange(n_iter):
                 print 'Iteration# %s' % i+' ----- '+time.ctime()
                 """# This is for sample between groups
-                ind_list_scb = df[df.loc[:,'Group']=='SCB'].index.tolist()
-                ind_list_cb = df[df.loc[:,'Group']=='CB'].index.tolist()
+                ind_list_scb = df[df.loc[:, 'Group'] == 'SCB'].index.tolist()
+                ind_list_cb = df[df.loc[:, 'Group'] == 'CB'].index.tolist()
                 a_scb = random.sample(ind_list_scb, 9)
                 b_scb = list(set(ind_list_scb) - set(a_scb))
                 a_cb = random.sample(ind_list_cb, 9)
                 b_cb = list(set(ind_list_cb) - set(a_cb))
-                input_dat_a = df.iloc[random.sample(a_scb+a_cb, len(a_scb+a_scb)), 3:]
-                input_dat_b = df.iloc[random.sample(b_scb+b_cb, len(b_scb+b_scb)), 3:]"""
+                input_dat_a = df.iloc[random.sample(a_scb+a_cb,
+                                                    len(a_scb+a_scb)), 3:]
+                input_dat_b = df.iloc[random.sample(b_scb+b_cb,
+                                                    len(b_scb+b_scb)), 3:]"""
 
                 # This is for sample within groups
                 ind_list = df[df.loc[:, 'Group'] == subjid].index.tolist()
