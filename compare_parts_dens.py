@@ -83,8 +83,8 @@ if __name__ == '__main__':
             compare_out_nmi[i] = cmp.normalized_MI(tree_a, tree_b)
             dens_combo_list.append(td)
         output_pref_ari = '%s_ARI_density_comparisons.txt' % subjid
-        np.savetxt(output_pref_ari,
-                   zip(compare_out_ari, dens_combo_list), fmt='%.4f')
+        out_ari = np.column_stack((compare_out_ari, dens_combo_list))
+        np.savetxt(output_pref_ari, out_ari, fmt='%.4f')
         output_pref_nmi = '%s_NMI_density_comparisons.txt' % subjid
-        np.savetxt(output_pref_nmi,
-                   zip(compare_out_nmi, dens_combo_list), fmt='%.4f')
+        out_nmi = np.column_stack((compare_out_nmi, dens_combo_list))
+        np.savetxt(output_pref_nmi, out_nmi, fmt='%.4f')
