@@ -1,7 +1,9 @@
 #!/usr/bin/env python
-"""This is to convert edgelists to binary encoding for louvain community detection.
-Then to run community detection."""
-__author__ = 'andric'
+"""This is to convert edgelists to binary encoding for
+louvain community detection.
+Then to run community detection.
+@author: andric
+"""
 
 import sys
 import os
@@ -9,6 +11,7 @@ import time
 import numpy as np
 from shlex import split
 from subprocess import call, STDOUT, PIPE, Popen
+
 
 class COMMUN:
 
@@ -25,7 +28,8 @@ class COMMUN:
         Unzip / zip the graph file for use with Louvain tools.
         :param file: This graph to be unzipped/zipped
         :param method: Either "zip" or "unzip"
-        :return: Writes to file the binary formatted graph for Louvain community detection
+        :return: Writes to file the binary formatted graph
+        for Louvain community detection
         """
         try:
             if method == 'zip':
@@ -50,7 +54,8 @@ class COMMUN:
         """
         if os.path.exists(self.graphname):
             f = open('stdout_files/stdout_from_convert.txt', 'w')
-            print 'Converting edgelist to binary for community detection -- '+time.ctime()
+            print 'Converting edgelist to binary for community detection'
+            print time.ctime()
             cmdargs = split('community_convert -i '+self.graphname+'  -o '+self.graphname+'.bin')
             call(cmdargs, stdout=f, stderr=STDOUT)
             f.close()
@@ -58,7 +63,9 @@ class COMMUN:
         elif os.path.exists(self.graphname+'.gz'):
             print 'You need to unzip the graph! '+time.ctime()
         else:
-            print 'Cannot find the graph. Check your configuration and inputs. \nFlaming... '+time.ctime()
+            print 'Cannot find the graph.'
+            print 'Check your configuration and inputs.'
+            print 'Flaming... '+time.ctime()
 
     def get_modularity(self, tree_out):
         """
@@ -74,43 +81,34 @@ class COMMUN:
 
 
 if __name__ == '__main__':
-    """NO CMD ARGS HERE ----------------------
-    if len(sys.argv) < 4:
-        sys.stderr.write("You done screwed up! \n"
-                         "Usage: %s <SUBJECT ID> <CONDITION ID> <THRESH DENSITY> \n" %
-                         (os.path.basename(sys.argv[0]),))"""
 
-    os.chdir(os.environ['t2']+'/hicre/noage_gend')
+    os.chdir(os.environ['t2']+'/hicre/regular')
     print os.getcwd()
 
-    subjid = 'SCB'
-    #subjid = 'Null' 
-    thresh_density = '0.1' 
-    treedir = 'AB_trees'
-    #treedir = 'Null_trees'
-    mod_dir = 'AB_modularity'
-    #mod_dir = 'Null_modularity'
+    treedir = 'trees'
+    mod_dir = 'modularity'
     niter = 100
-    graph_dir = 'ABsample_graphs'
+    graph_dir = 'graphs'
 
-    for i in xrange(niter):
-        for ll in ['A', 'B']:
-            # graph_dir = 'Null_graphs'
-            graph = '%s/%s.AG.%s_iter%s.dens_%s.edgelist' % (graph_dir, subjid, ll, i, thresh_density)
-            # graph = '%s/%s.dens_%s.edgelist' % (graph_dir, subjid, thresh_density)
+    for subjid in ['CB', 'SCB']:
+        for thresh_density in ['0.2', '0.3', '0.4', '0.5', '0.6']:
+            graph_name = '%s.dens_%s.edgelist' % (subjid, thresh_density)
+            graph = os.path.join(graph_dir, graph_name)
             cm = COMMUN(graph)
             cm.zipper('unzip')
             cm.convert_graph()
             cm.zipper('zip')
             # Below for doing modularity
             Qs = np.array(np.zeros(niter))
-            print 'Doing community detection. \nNumber of iterations: %s -- ' % niter+time.ctime()
+            print 'Doing community detection.'
+            print 'Number of iterations: %s -- ' % niter+time.ctime()
             if not os.path.exists(treedir):
                 os.makedirs(treedir)
             if not os.path.exists(mod_dir):
                 os.makedirs(mod_dir)
             for n in xrange(niter):
-                tree_outname = '%s/iter%s_subiter%s.%s.%s.dens_%s.tree' % (treedir, i, n, subjid, ll, thresh_density)
-                # tree_outname = '%s/iter%s.%s.dens_%s.tree' % (treedir, n, subjid, thresh_density)
-                Qs[n] = cm.get_modularity(tree_outname)
-                np.savetxt('%s/%s.AG_iter%s.%s.dens_%s.Qval' % (mod_dir, subjid, i, ll, thresh_density), Qs, fmt='%.4f')
+                tree_outname = 'iter%s.%s.dens_%s.tree' % \
+                                (n, subjid, thresh_density)
+                Qs[n] = cm.get_modularity(os.path.join(treedir, tree_outname))
+            Qs_outname = '%s.dens_%s.Qval' % (subjid, thresh_density)
+            np.savetxt(os.path.join(mod_dir, Qs_outname), Qs, fmt='%.4f')
