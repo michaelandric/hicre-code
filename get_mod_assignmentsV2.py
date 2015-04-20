@@ -23,13 +23,15 @@ modularity_dir = 'modularity'
 tree_dir = 'tree_highest'
 graph_dir = 'graphs'
 
+ct = pd.read_csv('CTallregionsBOTH.csv')
+ctnames = pd.Series(ct.columns[3:151])
+
 for dens in ['0.2', '0.3', '0.4', '0.5', '0.6']:
-    ct = pd.read_csv('CTallregionsBOTH.csv')
-    ctnames = pd.Series(ct.columns[3:151])
     for g in groups:
         qscores = '%s.dens_%s.Qval' % (g, dens)
         dat = np.genfromtxt(os.path.join(modularity_dir, qscores))
         maxiter = dat.argmax()
+        print 'Group: %s, density: %s, maxiter: %d' % (g, dens, maxiter)
         tree_name = 'iter%d.%s.dens_%s.tree_highest' % (maxiter, g, dens)
         tree_name_path = os.path.join(tree_dir, tree_name)
         tree = pd.DataFrame(np.loadtxt(tree_name_path), columns=cols)
