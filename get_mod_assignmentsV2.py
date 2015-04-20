@@ -12,7 +12,7 @@ import networkx as nx
 
 dfcols = ['region', 'community']
 cols = ['nodes', 'coms']
-groups = ['SCB']
+groups = ['CB', 'SCB']
 
 hr_dir = 'hicre/regular'
 base_dir = os.path.join(os.environ['t2'], hr_dir)
@@ -46,5 +46,5 @@ for dens in ['0.2', '0.3', '0.4', '0.5', '0.6']:
         nnames = list(np.concatenate(nnames))
         modid = list(np.concatenate(modid))
         newd = pd.DataFrame(zip(nnames, modid), columns=dfcols)
-        mod_list_name = '%s.inclusionlist.csv' % g
+        mod_list_name = '%s.inclusionlist.dens_%s.csv' % (g, dens)
         newd.to_csv(os.path.join(base_dir, mod_list_name))
