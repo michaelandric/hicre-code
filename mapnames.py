@@ -4,7 +4,9 @@ Major revision on Mon Apr 20 17:18:49 2015
 
 @author: andric
 
+
 How I got the surface node labels from the anot file:
+
 ConvertDset -i lh.aparc.a2009s.annot.niml.dset -o_1Dp \
 -prepend_node_index_1D -prefix lh_node_labels
 ConvertDset -i rh.aparc.a2009s.annot.niml.dset -o_1Dp \
@@ -19,11 +21,6 @@ import numpy as np
 suma_dir = '/Applications/AFNI/suma_MNI_N27/'
 ct = pd.read_csv('CTallregionsBOTH.csv')
 ctnames = pd.Series(ct.columns[3:151], name='region_name')
-clrs = pd.read_csv('colorsSCB_CB.csv')
-clrs_frc = []
-for i in xrange(len(clrs.loc[:, 'colorRGB'])):
-        clrs_frc.append([round(num/255., 5) for num in map(int,
-                         clrs.loc[:, 'colorRGB'][i].split())])
 
 # see above for how I made these 1D labels files
 lh_labels = np.loadtxt('lh_node_labels.1D.dset')
@@ -34,6 +31,11 @@ rh_labels = np.loadtxt('rh_node_labels.1D.dset')
 rois = open('rois.aparc.cmap', 'r').readlines()
 
 for dens in ['0.2', '0.3', '0.4', '0.5', '0.6']:
+    clrs = pd.read_csv('colorsSCB_CB.dens_%s.csv' % dens)
+    clrs_frc = []
+    for i in xrange(len(clrs.loc[:, 'colorRGB'])):
+        clrs_frc.append([round(num/255., 5) for num in map(int,
+                         clrs.loc[:, 'colorRGB'][i].split())])
     CB_inclu = pd.read_csv('CB.inclusionlist.dens_%s.csv' % dens)
     SCB_inclu = pd.read_csv('SCB.inclusionlist.dens_%s.csv' % dens)
 
