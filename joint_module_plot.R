@@ -11,11 +11,13 @@ scb_incl <- tbl_df(read.csv('SCB.inclusionlist.csv'))[,c(2,3)]
 
 lregions <- filter(regions_labels, label=='L')$region
 vregions <- filter(regions_labels, label=='V')$region
+xregions <- filter(regions_labels, label=='X')$region
 cb_l_filt <- filter(cb_incl, region%in% lregions)
 cb_v_filt <- filter(cb_incl, region%in% vregions)
+cb_x_filt <- filter(cb_incl, region%in% xregions)
 scb_l_filt <- filter(scb_incl, region%in% lregions)
 scb_v_filt <- filter(scb_incl, region%in% vregions)
-
+scb_x_filt <- filter(scb_incl, region%in% xregions)
 
 
 within_l_cb <- c()
@@ -65,6 +67,25 @@ for (reg in scb_v_filt$region)
 }
 cb_v_mod <- tbl_df(data.frame(cb_v_filt$region, within_v_cb, outside_v_cb))
 scb_v_mod <- tbl_df(data.frame(scb_v_filt$region, within_v_scb, outside_v_scb))
+
+cb_x_l <- c()
+cb_x_v <- c()
+scb_x_l <- c()
+scb_x_v <- c()
+for (reg in cb_x_filt$region)
+{
+    reg_com <- cb_x_filt$community[cb_x_filt$region==reg]
+    cb_x_l <- c(cb_x_l, length(which(reg_com == cb_l_filt$community)))
+    cb_x_v <- c(cb_x_v, length(which(reg_com == cb_v_filt$community)))
+}
+for (reg in scb_x_filt$region)
+{
+    reg_com <- scb_x_filt$community[scb_x_filt$region==reg]
+    scb_x_l <- c(scb_x_l, length(which(reg_com == scb_l_filt$community)))
+    scb_x_v <- c(scb_x_v, length(which(reg_com == scb_v_filt$community)))
+}
+x_dat <- tbl_df(data.frame(c(cb_x_l, scb_x_l), c(cb_x_v, scb_x_v), c(rep('CB', dim(cb_x_filt)[1]), rep('SCB', dim(scb_x_filt)[1]))))
+colnames(x_dat) <- c('Lang', 'Vis', 'gr')
 
 # l_dat <- tbl_df(data.frame(c(cb_l_mod$within_l_cb, scb_l_mod$within_l_scb), c(cb_l_mod$outside_l_cb, scb_l_mod$outside_l_scb), c(prop_l_cb, prop_l_scb), c(rep('CB', dim(cb_l_mod)[1]), rep('SCB', dim(scb_l_mod)[1]))))
 l_dat <- tbl_df(data.frame(c(cb_l_mod$within_l_cb, scb_l_mod$within_l_scb), c(cb_l_mod$outside_l_cb, scb_l_mod$outside_l_scb), c(rep('CB', dim(cb_l_mod)[1]), rep('SCB', dim(scb_l_mod)[1]))))
@@ -122,12 +143,41 @@ vp
 dev.off()
 
 
+pdf('Cross_comboballoon_separategroups_setaxes.pdf')
+ll = filter(l_dat, gr=='CB')
+aa = aggregate(ll$within, list(ll$gr, ll$outside, ll$within), length)
+lp = ggplot(aa, aes(x=aa$Group.3, y=aa$Group.2, size=aa$x, shape=aa$Group.1, label=aa$x)) + geom_point() + expand_limits(x=c(0,20), y=c(0,20)) + scale_x_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_y_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_size_continuous(range=c(2,10)) + xlab('Connect within Language regions') + ylab('Connect to Visual Regions') + ggtitle('CB Language') + theme_bw() + theme(panel.grid.minor = element_line(size=.2, linetype='dashed', color='gray25'), panel.grid.major= element_line(size=.5, color='gray25')) + geom_text(aes(x=aa$Group.3, y=aa$Group.2, label=aa$x, size=5), hjust=1.75, vjust=-1.5)
+lp
+ll = filter(l_dat, gr=='SCB')
+aa = aggregate(ll$within, list(ll$gr, ll$outside, ll$within), length)
+lp = ggplot(aa, aes(x=aa$Group.3, y=aa$Group.2, size=aa$x, label=aa$x)) + geom_point(shape=17) + expand_limits(x=c(0,20), y=c(0,20)) + scale_x_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_y_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_size_continuous(range=c(2,10)) + xlab('Connect within Language regions') + ylab('Connect to Visual Regions') + ggtitle('SCB Language') + theme_bw() + theme(panel.grid.minor = element_line(size=.2, linetype='dashed', color='gray25'), panel.grid.major= element_line(size=.5, color='gray25')) + geom_text(aes(x=aa$Group.3, y=aa$Group.2, label=aa$x, size=5), hjust=1.75, vjust=-1.5)
+lp
+vv = filter(v_dat, gr=='CB')
+aa = aggregate(vv$within, list(vv$gr, vv$outside, vv$within), length)
+vp = ggplot(aa, aes(x=aa$Group.3, y=aa$Group.2, size=aa$x, shape=aa$Group.1, label=aa$x)) + geom_point() + expand_limits(x=c(0,20), y=c(0,20)) + scale_x_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_y_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_size_continuous(range=c(2,10)) + xlab('Connect within Visual regions') + ylab('Connect to Language Regions') + ggtitle('CB Visual') + theme_bw() + theme(panel.grid.minor = element_line(size=.2, linetype='dashed', color='gray25'), panel.grid.major= element_line(size=.5, color='gray25')) + geom_text(aes(x=aa$Group.3, y=aa$Group.2, label=aa$x, size=5), hjust=1.75, vjust=-1.5)
+vp
+vv = filter(v_dat, gr=='SCB')
+aa = aggregate(vv$within, list(vv$gr, vv$outside, vv$within), length)
+vp = ggplot(aa, aes(x=aa$Group.3, y=aa$Group.2, size=aa$x, label=aa$x)) + geom_point(shape=17) + expand_limits(x=c(0,20), y=c(0,20)) + scale_x_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_y_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_size_continuous(range=c(2,10)) + xlab('Connect within Visual regions') + ylab('Connect to Language Regions') + ggtitle('SCB Visual') + theme_bw() + theme(panel.grid.minor = element_line(size=.2, linetype='dashed', color='gray25'), panel.grid.major= element_line(size=.5, color='gray25')) + geom_text(aes(x=aa$Group.3, y=aa$Group.2, label=aa$x, size=5), hjust=1.75, vjust=-1.5)
+vp
+dev.off()
 
-vp = ggplot(aa, aes(x=aa$Group.3, y=aa$Group.2, size=aa$x, shape=aa$Group.1, label=aa$x)) + geom_point() + scale_x_continuous(minor_breaks=seq(1,20,1), breaks=seq(5, 20, 5)) + scale_y_continuous(minor_breaks=seq(1,20,1), breaks=seq(5, 20, 5)) + scale_size_continuous(range=c(2,10)) + xlab('Connect within Visual regions') + ylab('Connect to Language Regions') + ggtitle('Visual') + theme_bw() + theme(panel.grid.minor = element_line(size=1), panel.grid.major= element_line(size=1.5)) + geom_text(aes(x=aa$Group.3, y=aa$Group.2, label=aa$x, size=5), hjust=2, vjust=-1)
+pdf('Cross_nonLangVis_shared_comms.pdf')
+cbx = filter(x_dat, gr=='CB')
+aa = aggregate(cbx$Lang, list(cbx$gr, cbx$Vis, cbx$Lang), length)
+xp = ggplot(aa, aes(x=aa$Group.3, y=aa$Group.2, size=aa$x, label=aa$x, shape=aa$Group.1)) + geom_point() + expand_limits(x=c(0,20), y=c(0,20)) + scale_x_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_y_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_size_continuous(range=c(2,10)) + xlab('Connect to Language regions') + ylab('Connect to Visual Regions') + ggtitle('CB Non-Language/Visual Shared communities') + theme_bw() + theme(panel.grid.minor = element_line(size=.2, linetype='dashed', color='gray25'), panel.grid.major= element_line(size=.5, color='gray25')) + geom_text(aes(x=aa$Group.3, y=aa$Group.2, label=aa$x, size=5), hjust=2, vjust=-2)
+xp
+scbx = filter(x_dat, gr=='SCB')
+aa = aggregate(scbx$Lang, list(scbx$gr, scbx$Vis, scbx$Lang), length)
+xp = ggplot(aa, aes(x=aa$Group.3, y=aa$Group.2, size=aa$x, label=aa$x)) + geom_point(shape=17) + expand_limits(x=c(0,20), y=c(0,20)) + scale_x_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_y_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_size_continuous(range=c(2,10)) + xlab('Connect to Language regions') + ylab('Connect to Visual Regions') + ggtitle('SCB Non-Language/Visual Shared communities') + theme_bw() + theme(panel.grid.minor = element_line(size=.2, linetype='dashed', color='gray25'), panel.grid.major= element_line(size=.5, color='gray25')) + geom_text(aes(x=aa$Group.3, y=aa$Group.2, label=aa$x, size=5), hjust=2, vjust=-2)
+xp
+dev.off()
+
+# Below is experimental
+vp = ggplot(aa, aes(x=aa$Group.3, y=aa$Group.2, size=aa$x, label=aa$x)) + geom_point(shape=17) + expand_limits(x=c(0,20), y=c(0,20)) + scale_x_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_y_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_size_continuous(range=c(2,10)) + xlab('Connect within Visual regions') + ylab('Connect to Language Regions') + ggtitle('SCB Visual') + theme_bw() + theme(panel.grid.minor = element_line(size=.2, linetype='dashed', color='gray25'), panel.grid.major= element_line(size=.5, color='gray25'))
 vp
 
 
-# Below is experimental
 my.colors <- function(n)
 {
     rev(heat.colors(n))
@@ -142,6 +192,16 @@ hexbinplot(outside ~ within | gr, data=l_dat, xbins = 12
         , ylab = "Outside"
         , main = "Language"
         #, colramp = my.colors, colorcut = seq(0, 1, length = 10)
+)
+
+hexbinplot(Vis ~ Lang | gr, data=x_dat
+           , panel = function(x,y, ...)
+               {
+               panel.hexbinplot(x, y, ...)
+           }
+           , xlab = 'Language'
+           , ylab = 'Visual'
+           , main = 'Shared modules'
 )
 
 
