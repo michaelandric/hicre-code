@@ -143,22 +143,23 @@ vp
 dev.off()
 
 
-pdf('Cross_comboballoon_separategroups_setaxes.pdf')
+pdf('Cross_comboballoon_separategroups_setaxes2.pdf') # "2.pdf" because it reflects updated regions post-neurosynth labels
+axlim = 25
 ll = filter(l_dat, gr=='CB')
 aa = aggregate(ll$within, list(ll$gr, ll$outside, ll$within), length)
-lp = ggplot(aa, aes(x=aa$Group.3, y=aa$Group.2, size=aa$x, shape=aa$Group.1, label=aa$x)) + geom_point() + expand_limits(x=c(0,20), y=c(0,20)) + scale_x_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_y_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_size_continuous(range=c(2,10)) + xlab('Connect within Language regions') + ylab('Connect to Visual Regions') + ggtitle('CB Language') + theme_bw() + theme(panel.grid.minor = element_line(size=.2, linetype='dashed', color='gray25'), panel.grid.major= element_line(size=.5, color='gray25')) + geom_text(aes(x=aa$Group.3, y=aa$Group.2, label=aa$x, size=5), hjust=1.75, vjust=-1.5)
+lp = ggplot(aa, aes(x=aa$Group.3, y=aa$Group.2, size=aa$x, shape=aa$Group.1, label=aa$x)) + geom_point() + expand_limits(x=c(0,axlim), y=c(0,axlim)) + scale_x_continuous(minor_breaks=seq(0,axlim,1), breaks=seq(0,axlim,5)) + scale_y_continuous(minor_breaks=seq(0,axlim,1), breaks=seq(0,axlim,5)) + scale_size_continuous(range=c(2,10)) + xlab('Connect within Language regions') + ylab('Connect to Visual Regions') + ggtitle('CB Language') + theme_bw() + theme(panel.grid.minor = element_line(size=.2, linetype='dashed', color='gray25'), panel.grid.major= element_line(size=.5, color='gray25')) + geom_text(aes(x=aa$Group.3, y=aa$Group.2, label=aa$x, size=5), hjust=1.75, vjust=-1.5)
 lp
 ll = filter(l_dat, gr=='SCB')
 aa = aggregate(ll$within, list(ll$gr, ll$outside, ll$within), length)
-lp = ggplot(aa, aes(x=aa$Group.3, y=aa$Group.2, size=aa$x, label=aa$x)) + geom_point(shape=17) + expand_limits(x=c(0,20), y=c(0,20)) + scale_x_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_y_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_size_continuous(range=c(2,10)) + xlab('Connect within Language regions') + ylab('Connect to Visual Regions') + ggtitle('SCB Language') + theme_bw() + theme(panel.grid.minor = element_line(size=.2, linetype='dashed', color='gray25'), panel.grid.major= element_line(size=.5, color='gray25')) + geom_text(aes(x=aa$Group.3, y=aa$Group.2, label=aa$x, size=5), hjust=1.75, vjust=-1.5)
+lp = ggplot(aa, aes(x=aa$Group.3, y=aa$Group.2, size=aa$x, label=aa$x)) + geom_point(shape=17) + expand_limits(x=c(0,axlim), y=c(0,axlim)) + scale_x_continuous(minor_breaks=seq(0,axlim,1), breaks=seq(0,axlim,5)) + scale_y_continuous(minor_breaks=seq(0,axlim,1), breaks=seq(0,axlim,5)) + scale_size_continuous(range=c(2,10)) + xlab('Connect within Language regions') + ylab('Connect to Visual Regions') + ggtitle('SCB Language') + theme_bw() + theme(panel.grid.minor = element_line(size=.2, linetype='dashed', color='gray25'), panel.grid.major= element_line(size=.5, color='gray25')) + geom_text(aes(x=aa$Group.3, y=aa$Group.2, label=aa$x, size=5), hjust=1.75, vjust=-1.5)
 lp
 vv = filter(v_dat, gr=='CB')
 aa = aggregate(vv$within, list(vv$gr, vv$outside, vv$within), length)
-vp = ggplot(aa, aes(x=aa$Group.3, y=aa$Group.2, size=aa$x, shape=aa$Group.1, label=aa$x)) + geom_point() + expand_limits(x=c(0,20), y=c(0,20)) + scale_x_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_y_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_size_continuous(range=c(2,10)) + xlab('Connect within Visual regions') + ylab('Connect to Language Regions') + ggtitle('CB Visual') + theme_bw() + theme(panel.grid.minor = element_line(size=.2, linetype='dashed', color='gray25'), panel.grid.major= element_line(size=.5, color='gray25')) + geom_text(aes(x=aa$Group.3, y=aa$Group.2, label=aa$x, size=5), hjust=1.75, vjust=-1.5)
+vp = ggplot(aa, aes(x=aa$Group.3, y=aa$Group.2, size=aa$x, shape=aa$Group.1, label=aa$x)) + geom_point() + expand_limits(x=c(0,axlim), y=c(0,axlim)) + scale_x_continuous(minor_breaks=seq(0,axlim,1), breaks=seq(0,axlim,5)) + scale_y_continuous(minor_breaks=seq(0,axlim,1), breaks=seq(0,axlim,5)) + scale_size_continuous(range=c(2,10)) + xlab('Connect within Visual regions') + ylab('Connect to Language Regions') + ggtitle('CB Visual') + theme_bw() + theme(panel.grid.minor = element_line(size=.2, linetype='dashed', color='gray25'), panel.grid.major= element_line(size=.5, color='gray25')) + geom_text(aes(x=aa$Group.3, y=aa$Group.2, label=aa$x, size=5), hjust=1.75, vjust=-1.5)
 vp
 vv = filter(v_dat, gr=='SCB')
 aa = aggregate(vv$within, list(vv$gr, vv$outside, vv$within), length)
-vp = ggplot(aa, aes(x=aa$Group.3, y=aa$Group.2, size=aa$x, label=aa$x)) + geom_point(shape=17) + expand_limits(x=c(0,20), y=c(0,20)) + scale_x_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_y_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_size_continuous(range=c(2,10)) + xlab('Connect within Visual regions') + ylab('Connect to Language Regions') + ggtitle('SCB Visual') + theme_bw() + theme(panel.grid.minor = element_line(size=.2, linetype='dashed', color='gray25'), panel.grid.major= element_line(size=.5, color='gray25')) + geom_text(aes(x=aa$Group.3, y=aa$Group.2, label=aa$x, size=5), hjust=1.75, vjust=-1.5)
+vp = ggplot(aa, aes(x=aa$Group.3, y=aa$Group.2, size=aa$x, label=aa$x)) + geom_point(shape=17) + expand_limits(x=c(0,axlim), y=c(0,axlim)) + scale_x_continuous(minor_breaks=seq(0,axlim,1), breaks=seq(0,axlim,5)) + scale_y_continuous(minor_breaks=seq(0,axlim,1), breaks=seq(0,axlim,5)) + scale_size_continuous(range=c(2,10)) + xlab('Connect within Visual regions') + ylab('Connect to Language Regions') + ggtitle('SCB Visual') + theme_bw() + theme(panel.grid.minor = element_line(size=.2, linetype='dashed', color='gray25'), panel.grid.major= element_line(size=.5, color='gray25')) + geom_text(aes(x=aa$Group.3, y=aa$Group.2, label=aa$x, size=5), hjust=1.75, vjust=-1.5)
 vp
 dev.off()
 
@@ -172,6 +173,8 @@ aa = aggregate(scbx$Lang, list(scbx$gr, scbx$Vis, scbx$Lang), length)
 xp = ggplot(aa, aes(x=aa$Group.3, y=aa$Group.2, size=aa$x, label=aa$x)) + geom_point(shape=17) + expand_limits(x=c(0,20), y=c(0,20)) + scale_x_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_y_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_size_continuous(range=c(2,10)) + xlab('Connect to Language regions') + ylab('Connect to Visual Regions') + ggtitle('SCB Non-Language/Visual Shared communities') + theme_bw() + theme(panel.grid.minor = element_line(size=.2, linetype='dashed', color='gray25'), panel.grid.major= element_line(size=.5, color='gray25')) + geom_text(aes(x=aa$Group.3, y=aa$Group.2, label=aa$x, size=5), hjust=2, vjust=-2)
 xp
 dev.off()
+
+
 
 # Below is experimental
 vp = ggplot(aa, aes(x=aa$Group.3, y=aa$Group.2, size=aa$x, label=aa$x)) + geom_point(shape=17) + expand_limits(x=c(0,20), y=c(0,20)) + scale_x_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_y_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_size_continuous(range=c(2,10)) + xlab('Connect within Visual regions') + ylab('Connect to Language Regions') + ggtitle('SCB Visual') + theme_bw() + theme(panel.grid.minor = element_line(size=.2, linetype='dashed', color='gray25'), panel.grid.major= element_line(size=.5, color='gray25'))
