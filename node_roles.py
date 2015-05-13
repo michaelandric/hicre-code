@@ -21,6 +21,35 @@ def make_networkx_graph(n_nodes, edgelist_name):
     return g
 
 
+def mymodule_degree_zscore(W, Ci, flag=0):
+    """
+    The within-module degree z-score is a within-module version of degree
+    centrality.
+    Inputs:     W,      binary/weighted, directed/undirected connection matrix
+               Ci,      community affiliation vector
+             flag,		0: undirected graph = default
+                        1: directed graph in degree
+                        2: directed graph out degree
+                        3: directed graph in and out degree
+    Output:     Z,      within-module degree z-score.
+    Note: The output for directed graphs is the "out-neighbor" z-score.
+    """
+    if flag == 2:
+        W = W.copy()
+        W = W.T
+    elif flag == 3:
+        W = W.copy()
+        W = W + W.T
+    n = len(W)
+    Z = np.zeros((n, ))
+    for i in xrange(int(np.max(Ci))+1):
+        Koi = np.sum(W[np.ix_(Ci == i, Ci == i)], axis=1)
+        Z[np.where(Ci == i)] = (Koi-np.mean(Koi))/np.std(Koi)
+
+    Z[np.where(np.isnan(Z))] = 0
+    return Z
+
+
 if __name__ == '__main__':
 
     dat_dir = '/Users/andric/Documents/workspace/hicre/'
