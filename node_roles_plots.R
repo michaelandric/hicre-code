@@ -46,7 +46,48 @@ roles_df_lv <- tbl_df(data.frame(part_coefs_lv, within_mod_z_lv, group_lv, regio
 
 
 pdf('Node_roles_plots.pdf')
-ggplot(roles_df, aes(x=part_coefs, y=within_mod_z, color=group)) + geom_point() + scale_x_continuous(breaks=c(.05,.62,.8)) + scale_y_continuous(breaks=c(2.5)) + expand_limits(x=c(0,1), y=c(-2,3)) + xlab('Participation Coef') + ylab('Within-module degree Z') + ggtitle('All regions') + theme_linedraw() 
+ggplot(roles_df, 
+       aes(x=part_coefs, y=within_mod_z, color=group)) +
+    geom_point() +
+    scale_x_continuous(breaks=c(.05, .62, .8)) +
+    scale_y_continuous(breaks=c(-2, 2.5), minor_breaks=c(-2, 2.5)) +
+    expand_limits(x=c(0, 1), y=c(-2, 3)) +
+    xlab('Participation Coef') +
+    ylab('Within-module degree Z') +
+    ggtitle('All regions') +
+    theme_bw() +
+    theme(panel.grid.major= element_line(size=.5, color='gray25'),
+          panel.grid.minor.y = element_line(size=.2, linetype='dashed', color='gray25')) +
+    scale_shape_manual(values=c(15, 17))
 
-ggplot(roles_df_lv, aes(x=part_coefs_lv, y=within_mod_z_lv, color=group_lv, shape=region_type)) + geom_point() + scale_x_continuous(breaks=c(.05,.62,.8)) + scale_y_continuous(breaks=c(2.5)) + expand_limits(x=c(0,1), y=c(-2,3)) + xlab('Participation Coef') + ylab('Within-module degree Z') + ggtitle('Language & Visual regions') + theme_linedraw() 
+ggplot(roles_df_lv,
+       aes(x=part_coefs_lv, y=within_mod_z_lv, color=group_lv, shape=region_type)) +
+    geom_point() +
+    scale_x_continuous(breaks=c(.05, .62, .8)) +
+    scale_y_continuous(breaks=c(-2, 2.5), minor_breaks=c(-2, 2.5)) +
+    expand_limits(x=c(0, 1), y=c(-2, 3)) +
+    xlab('Participation Coef') +
+    ylab('Within-module degree Z') +
+    ggtitle('Language & Visual regions') +
+    theme_bw() +
+    theme(panel.grid.major = element_line(size=.5, color='gray25'),
+          panel.grid.minor.y = element_line(size=.2, linetype='dashed', color='gray25')) +
+    scale_shape_manual(values=c(15, 17))
 dev.off()
+
+
+tmp <- filter(roles_df_lv, part_coefs_lv <= .05)
+print(aggregate(tmp$part_coefs_lv, list(tmp$group_lv, tmp$region_type), length))
+
+tmp <- filter(roles_df_lv, part_coefs_lv > .05 & part_coefs_lv <= .62)
+print(aggregate(tmp$part_coefs_lv, list(tmp$group_lv, tmp$region_type), length))
+
+tmp <- filter(roles_df_lv, part_coefs_lv > .62 & part_coefs_lv <= .8)
+print(aggregate(tmp$part_coefs_lv, list(tmp$group_lv, tmp$region_type), length))
+
+# ggplot(roles_df_lv, aes(x=part_coefs_lv, y=within_mod_z_lv, color=group_lv, shape=region_type)) + geom_point() + scale_x_continuous(breaks=c(.05,.62,.8)) + scale_y_continuous(breaks=c(2.5)) + expand_limits(x=c(0,1), y=c(-2,3)) + xlab('Participation Coef') + ylab('Within-module degree Z') + ggtitle('Language & Visual regions') + theme_bw() + theme(panel.grid.major= element_line(size=.5, color='gray25')) +
+#geom_segment(aes(x=.05, xend=.05, y = min(roles_df_lv$within_mod_z_lv), yend = 2.5)) +
+#    geom_segment(aes(x=.62, xend=.62, y = min(roles_df_lv$within_mod_z_lv), yend = 2.5)) +
+#    geom_segment(aes(x=.8, xend=.8, y = min(roles_df_lv$within_mod_z_lv), yend = 2.5)) +
+#    geom_segment(aes(y=2.5, yend=2.5, x = min(roles_df_lv$part_coefs_lv)-.25, xend = max(roles_df_lv$part_coefs_lv)+.25)) +
+    
