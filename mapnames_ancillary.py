@@ -19,16 +19,19 @@ import pandas as pd
 import numpy as np
 
 suma_dir = '/Applications/AFNI/suma_MNI_N27/'
-ct = pd.read_csv('CTallregionsBOTH.csv')
+basedir = '/Users/andric/Documents/workspace/hicre/'
+ct_fname = 'CTallregionsBOTH.csv'
+ct = pd.read_csv(os.path.join(basedir, ct_fname))
 ctnames = pd.Series(ct.columns[3:151], name='region_name')
 
 # see above for how I made these 1D labels files
-lh_labels = np.loadtxt('lh_node_labels.1D.dset')
-rh_labels = np.loadtxt('rh_node_labels.1D.dset')
+lh_labels = np.loadtxt(os.path.join(basedir, 'lh_node_labels.1D.dset'))
+rh_labels = np.loadtxt(os.path.join(basedir, 'rh_node_labels.1D.dset'))
 
 # this is same as "lh.aparc.a2009s.annot.1D.cmap" and
 # "rh.aparc.a2009s.annot.1D.cmap"
-rois = open('rois.aparc.cmap', 'r').readlines()
+cmap_fname = 'rois.aparc.cmap'
+rois = open(os.path.join(basedir, cmap_fname), 'r').readlines()
 
 nm_rows = np.array(rois)[np.arange(1719, 1869, 2)]
 idents = np.array(map(int,
@@ -38,7 +41,8 @@ idents_f = np.delete(idents, np.where(np.in1d(idents, 1644825)))
 lh_idents_dict = dict(zip(np.array(idents_f), ctnames[0:74]))
 rh_idents_dict = dict(zip(np.array(idents_f), ctnames[74:148]))
 
-blindLV = open('blind.pls2LVs.txt').readlines()
+blindLV_fname = 'SightBlindLV1LoadandSig.txt'
+blindLV = open(os.path.join(basedir, blindLV_fname)).readlines()
 lv1 = []
 lv2 = []
 for b in blindLV:
@@ -70,6 +74,6 @@ for h in ['lh', 'rh']:
             surf_out[i, :] = lv_dict[region]
         except:
             surf_out[i, :] = np.zeros(ncols)
-    labels_out = '%s_lv_labels.1D' % h
-    np.savetxt(labels_out, np.column_stack((aparc[:, 0], surf_out)),
-               fmt='%i %f %f')
+    labels_out = '%s_SightBlindLV1LoadandSig_labels.1D' % h
+    np.savetxt(os.path.join(basedir, labels_out),
+               np.column_stack((aparc[:, 0], surf_out)), fmt='%i %f %f')
