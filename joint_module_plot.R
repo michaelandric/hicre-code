@@ -163,14 +163,14 @@ vp = ggplot(aa, aes(x=aa$Group.3, y=aa$Group.2, size=aa$x, label=aa$x)) + geom_p
 vp
 dev.off()
 
-pdf('Cross_nonLangVis_shared_comms.pdf')
+pdf('Cross_nonLangVis_shared_comms2.pdf')
 cbx = filter(x_dat, gr=='CB')
 aa = aggregate(cbx$Lang, list(cbx$gr, cbx$Vis, cbx$Lang), length)
-xp = ggplot(aa, aes(x=aa$Group.3, y=aa$Group.2, size=aa$x, label=aa$x, shape=aa$Group.1)) + geom_point() + expand_limits(x=c(0,20), y=c(0,20)) + scale_x_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_y_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_size_continuous(range=c(2,10)) + xlab('Connect to Language regions') + ylab('Connect to Visual Regions') + ggtitle('CB Non-Language/Visual Shared communities') + theme_bw() + theme(panel.grid.minor = element_line(size=.2, linetype='dashed', color='gray25'), panel.grid.major= element_line(size=.5, color='gray25')) + geom_text(aes(x=aa$Group.3, y=aa$Group.2, label=aa$x, size=5), hjust=2, vjust=-2)
+xp = ggplot(aa, aes(x=aa$Group.3, y=aa$Group.2, size=aa$x, label=aa$x, shape=aa$Group.1)) + geom_point() + expand_limits(x=c(0,axlim), y=c(0,axlim)) + scale_x_continuous(minor_breaks=seq(0,axlim,1), breaks=seq(0,axlim,5)) + scale_y_continuous(minor_breaks=seq(0,axlim,1), breaks=seq(0,axlim,5)) + scale_size_continuous(range=c(2,10)) + xlab('Connect to Language regions') + ylab('Connect to Visual Regions') + ggtitle('CB Non-Language/Visual Shared communities') + theme_bw() + theme(panel.grid.minor = element_line(size=.2, linetype='dashed', color='gray25'), panel.grid.major= element_line(size=.5, color='gray25')) + geom_text(aes(x=aa$Group.3, y=aa$Group.2, label=aa$x, size=5), hjust=2, vjust=-2)
 xp
 scbx = filter(x_dat, gr=='SCB')
 aa = aggregate(scbx$Lang, list(scbx$gr, scbx$Vis, scbx$Lang), length)
-xp = ggplot(aa, aes(x=aa$Group.3, y=aa$Group.2, size=aa$x, label=aa$x)) + geom_point(shape=17) + expand_limits(x=c(0,20), y=c(0,20)) + scale_x_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_y_continuous(minor_breaks=seq(0,20,1), breaks=seq(0,20,5)) + scale_size_continuous(range=c(2,10)) + xlab('Connect to Language regions') + ylab('Connect to Visual Regions') + ggtitle('SCB Non-Language/Visual Shared communities') + theme_bw() + theme(panel.grid.minor = element_line(size=.2, linetype='dashed', color='gray25'), panel.grid.major= element_line(size=.5, color='gray25')) + geom_text(aes(x=aa$Group.3, y=aa$Group.2, label=aa$x, size=5), hjust=2, vjust=-2)
+xp = ggplot(aa, aes(x=aa$Group.3, y=aa$Group.2, size=aa$x, label=aa$x)) + geom_point(shape=17) + expand_limits(x=c(0,axlim), y=c(0,axlim)) + scale_x_continuous(minor_breaks=seq(0,axlim,1), breaks=seq(0,axlim,5)) + scale_y_continuous(minor_breaks=seq(0,axlim,1), breaks=seq(0,axlim,5)) + scale_size_continuous(range=c(2,10)) + xlab('Connect to Language regions') + ylab('Connect to Visual Regions') + ggtitle('SCB Non-Language/Visual Shared communities') + theme_bw() + theme(panel.grid.minor = element_line(size=.2, linetype='dashed', color='gray25'), panel.grid.major= element_line(size=.5, color='gray25')) + geom_text(aes(x=aa$Group.3, y=aa$Group.2, label=aa$x, size=5), hjust=2, vjust=-2)
 xp
 dev.off()
 
