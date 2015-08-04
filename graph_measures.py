@@ -66,26 +66,29 @@ def get_degrees(graph, n_nodes, outname):
     f.close()
 
 
-def get_betweenness_centrality(graph, n_nodes, outname):
+def get_betweenness_centrality(graph, outname):
     bc = nx.betweenness_centrality(graph)
-    zd = [i for i in range(0, n_nodes) if i not in bc.keys()]
-    ZeroD = dict(zip(zd, np.zeros(len(zd), dtype=np.int8)))
-    outD = dict(bc, **ZeroD)
     f = open(outname, 'w')
-    f.write('\n'.join(map(str, outD.values())))
+    f.write('\n'.join(map(str, bc.values())))
     f.close()
 
 
-def get_edge_betweenness_centrality(graph, n_nodes, outname):
+def get_edge_betweenness_centrality(graph, outname):
     ebc = nx.edge_betweenness_centrality(graph)
-    zd = [i for i in range(0, n_nodes) if i not in ebc.keys()]
-    ZeroD = dict(zip(zd, np.zeros(len(zd), dtype=np.int8)))
-    outD = dict(ebc, **ZeroD)
     f = open(outname, 'w')
-    f.write('\n'.join(map(str, outD.values())))
+    f.write('\n'.join(map(str, ebc.values())))
     f.close()
 
 
+def clustering_coef(graph, outname):
+    cc = nx.clustering(graph)
+    f = open(outname, 'w')
+    f.write('\n'.join(map(str, cc.values())))
+    f.close()
+
+
+"""
+NEED TO FIX THIS STILL
 def get_shortest_path_length(graph, n_nodes, outname):
     sp = nx.shortest_path_length(graph)
     zd = [i for i in range(0, n_nodes) if i not in sp.keys()]
@@ -94,7 +97,7 @@ def get_shortest_path_length(graph, n_nodes, outname):
     f = open(outname, 'w')
     f.write('\n'.join(map(str, outD.values())))
     f.close()
-
+"""
 
 if __name__ == "__main__":
     base_dir = '%s/hicre/regular/' % os.environ['t2']
@@ -106,8 +109,14 @@ if __name__ == "__main__":
             edgelist = os.path.join(base_dir, 'graphs', el_pref)
             graph = make_networkx_graph(nnodes, edgelist)
 
-            deg_dir = os.path.join(base_dir, 'degrees')
-            if not os.path.exists(deg_dir):
-                os.makedirs(deg_dir)
-            deg_outname = os.path.join(deg_dir, '%s.dens_%s.degrees' % (g, i))
-            get_degrees(graph, nnodes, deg_outname)
+            bc_dir = os.path.join(base_dir, 'betweenness_centrality')
+            if not os.path.exists(bc_dir):
+                os.makedirs(bc_dir)
+            bc_outname = os.path.join(bc_dir, '%s.dens_%s.btwn_cntr' % (g, i))
+            get_edge_betweenness_centrality(graph, bc_outname)
+
+            cc_dir = os.path.join(base_dir, 'clustering_coefficient')
+            if not os.path.exists(cc_dir):
+                os.makedirs(cc_dir)
+            cc_outname = os.path.join(cc_dir, '%s.dens_%s.clust_coef' % (g, i))
+            clustering_coef(graph, cc_outname)
