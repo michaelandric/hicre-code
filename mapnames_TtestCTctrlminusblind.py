@@ -41,7 +41,7 @@ idents_f = np.delete(idents, np.where(np.in1d(idents, 1644825)))
 lh_idents_dict = dict(zip(np.array(idents_f), ctnames[0:74]))
 rh_idents_dict = dict(zip(np.array(idents_f), ctnames[74:148]))
 
-data_fname = 'TtestCTctrlminusblind.txt'
+data_fname = 'TtestCTctrlminusblind2.txt'
 data = open(os.path.join(basedir, data_fname)).readlines()
 tvals = []
 for b in data:
@@ -70,6 +70,6 @@ for h in ['lh', 'rh']:
             surf_out[i, :] = tvals_dict[region]
         except:
             surf_out[i, :] = np.zeros(ncols)
-    labels_out = '%s_TtestCTctrlminusblind.1D' % h
+    labels_out = '%s_TtestCTctrlminusblind2.1D' % h
     np.savetxt(os.path.join(basedir, labels_out),
                np.column_stack((aparc[:, 0], surf_out)), fmt='%i %f')
